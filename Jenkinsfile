@@ -15,7 +15,7 @@ pipeline {
         }
       }
     }
-    stage('Package') { stage { bat 'package.bat'}}
+    stage('Package') { steps { bat 'package.bat'}}
     post {
       success {archiveArtifacts artifacts: 'dist/**'}
       failure { echo 'CI pipeline failure'}
