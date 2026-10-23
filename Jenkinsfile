@@ -4,42 +4,16 @@ pipeline {
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['staging', 'production'],
-            description: 'Target'
-        )
-    }
-
-    stages {
-        stage('Tests') {
-            parallel {
-                stage('Unit') {
-                    steps {
-                        bat 'echo Unit tests'
-                    }
+            choices: ['dev', 'staging', 'production']) }
+    stages{
+      stage('Approve'){
+          when{ expression { params.ENVIRONMENT == 'production'}}
+          steps{ input message: 'Deploy to production'}
+           }
                 }
-
-                stage('Integration') {
+                stage('Deploy') {
                     steps {
-                        bat 'echo Integration tests'
-                    }
-                }
-            }
-        }
-
-        stage('Package') {
-            steps {
-                bat 'package.bat'
-            }
-        }
+                        bat "echo Deploy to $(params.ENVIRONMENT)"}
     }
-
-    post {
-        success {
-            archiveArtifacts artifacts: 'dist/**'
-        }
-
-        failure {
-            echo 'CI pipeline failed'
-        }
     }
 }
