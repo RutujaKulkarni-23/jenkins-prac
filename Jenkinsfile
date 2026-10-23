@@ -13,7 +13,7 @@ pipeline {
                 }
                 stage('Deploy') {
                     steps {
-                        bat {"echo Deploy to $(params.ENVIRONMENT)"}
+                        bat {"echo Deploy to ${params.ENVIRONMENT}"}
     }
     }
 }
